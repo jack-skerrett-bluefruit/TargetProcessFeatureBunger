@@ -19,4 +19,3 @@ class Jsonifier():
                 test_step["Description"] = line
                 test_case["TestSteps"]["Items"].append(test_step)
         self.dictionary_feature_file = test_case
-
