@@ -1,4 +1,4 @@
-from feature_file_reader import Reader
+from src.feature_file_reader import Reader
 from settings import TP_DICT, DEFAULT_TEST_STEP
 from copy import deepcopy
 

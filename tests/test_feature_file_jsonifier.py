@@ -1,6 +1,6 @@
 from pytest import fixture
-from feature_file_reader import Reader
-from feature_file_jsonifier import Jsonifier
+from src.feature_file_reader import Reader
+from src.feature_file_jsonifier import Jsonifier
 
 @fixture
 def json_test_feature():
