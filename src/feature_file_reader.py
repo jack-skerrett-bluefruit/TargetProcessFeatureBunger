@@ -11,9 +11,19 @@ class Reader():
             for line in f:
                 if(line.strip() == ""):
                     continue
+                elif(line.split()[0] == "Feature:"):
+                    self.feature_file.append(line.strip())
+                elif(line[:8] == "Scenario" and first_pass):
+                    test_case.append(line.strip())
+                    first_pass = False
                 elif(line[:8] == "Scenario" and not first_pass):
                     self.feature_file.append(test_case)
                     test_case = []
-                first_pass = False
-                test_case.append(line.strip())
+                    test_case.append(line.strip())
+                elif(line.split()[0] in ("Given", "When", "Then", "And", "But", "Examples:")):
+                    test_case.append(line.strip())
+                    first_pass = False
+                elif("|" in line):
+                    test_case.append(line.strip())
+                    first_pass = False
         self.feature_file.append(test_case)
