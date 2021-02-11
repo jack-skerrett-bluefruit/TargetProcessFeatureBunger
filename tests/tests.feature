@@ -5,5 +5,5 @@ Then there is an outcome
 
 Scenario: This is another test title
 Given a slightly different set up
-When an similar action occurs
+When a similar action occurs
 Then there is a different outcome
