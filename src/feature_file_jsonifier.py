@@ -1,5 +1,5 @@
-from feature_file_reader import Reader
-from settings import TP_DICT, DEFAULT_TEST_STEP
+from src.feature_file_reader import Reader
+from settings import NEW_TEST_CASES, DEFAULT_TEST_STEP
 from copy import deepcopy
 
 class Jsonifier():
@@ -12,7 +12,7 @@ class Jsonifier():
         
     def set_tp_format_feature_file(self):
         for list_test_case in self.reader.feature_file:
-            test_case = deepcopy(TP_DICT)
+            test_case = deepcopy(NEW_TEST_CASES)
             test_case["Project"]["ID"] = self.project
             for line in list_test_case:
                 if(line == ""):
