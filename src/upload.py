@@ -1,7 +1,6 @@
 import requests
 from json import loads
 from settings import TP_URL, ACCESS_TOKEN
-from src.feature_file_jsonifier import Jsonifier
 
 class Uploader():
     def __init__(self, entity_type, data = None):
