@@ -7,11 +7,15 @@ class Jsonifier():
         self.reader = Reader(file_name)
         self.project = project
         self.tp_format_feature_file = []
+        self.feature_name = ""
         self.set_tp_format_feature_file()
 
         
     def set_tp_format_feature_file(self):
         for list_test_case in self.reader.feature_file:
+            if(type(list_test_case) == str):
+                if(list_test_case.split()[0] == "Feature:"):
+                    self.feature_name = list_test_case
             test_case = deepcopy(NEW_TEST_CASES)
             test_case["Project"]["ID"] = self.project
             for line in list_test_case:

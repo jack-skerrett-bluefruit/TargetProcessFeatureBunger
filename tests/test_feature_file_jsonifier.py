@@ -10,6 +10,10 @@ def json_test_feature():
 def json_tests_feature():
     return Jsonifier("tests/tests.feature", 12345)
 
+@fixture
+def json_whole_feature_file():
+    return Jsonifier("tests/whole_feature.feature", 12345)
+
 def test_jsonifier_initialises_with_a_read_feature_file(json_test_feature):
     read_feature_file = [
         [
@@ -97,9 +101,14 @@ def test_jsonifier_converts_a_test_into_a_target_process_friendly_dictionary_tes
                     "Description": "Then there is an outcome"
                 }
             ]
-
         }
     }
     ]
     assert expected_dictionary == json_test_feature.tp_format_feature_file
+
+def test_jsonifier_stores_feature_file_name(json_whole_feature_file):
+    assert json_whole_feature_file.feature_name == "Feature: Whole Feature"
+
+def test_jsonifier_doesnt_store_a_feature_file_name_if_there_isnt_one_in_the_feature_file(json_tests_feature):
+    assert json_tests_feature.feature_name == ""
 
