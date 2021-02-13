@@ -1,5 +1,5 @@
-from src.feature_file_reader import Reader
-from settings import NEW_TEST_CASES, DEFAULT_TEST_STEP
+from src.reader import Reader
+from settings import NEW_TEST_CASES, DEFAULT_TEST_STEP, CREATE_FEATURE_OR_TEST_PLAN_BODY
 from copy import deepcopy
 
 class Jsonifier():
@@ -9,6 +9,7 @@ class Jsonifier():
         self.tp_format_feature_file = []
         self.feature_name = ""
         self.set_tp_format_feature_file()
+        
 
         
     def set_tp_format_feature_file(self):
@@ -16,6 +17,7 @@ class Jsonifier():
             if(type(list_test_case) == str):
                 if(list_test_case.split()[0] == "Feature:"):
                     self.feature_name = list_test_case
+                    continue
             test_case = deepcopy(NEW_TEST_CASES)
             test_case["Project"]["ID"] = self.project
             for line in list_test_case:
@@ -28,3 +30,11 @@ class Jsonifier():
                     test_step["Description"] = line
                     test_case["TestSteps"]["Items"].append(test_step)
             self.tp_format_feature_file.append(test_case)
+
+    def create_new_feature_or_test_plan_body(self):
+        feature_body = CREATE_FEATURE_OR_TEST_PLAN_BODY
+        feature_body["Name"] = self.feature_name
+        feature_body["Project"]["ID"] = self.project
+        bulk_feature_body= []
+        bulk_feature_body.append(feature_body)
+        return bulk_feature_body

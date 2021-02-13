@@ -1,5 +1,5 @@
 from pytest import fixture
-from src.feature_file_reader import Reader
+from src.reader import Reader
 
 @fixture
 def test_reader():
