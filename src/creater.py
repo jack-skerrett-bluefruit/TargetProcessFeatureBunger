@@ -12,4 +12,11 @@ class Creater():
 
     def upload_entity(self):
         response = requests.post(self.request_url, json=self.data)
-        return response.status_code, response.json()["Items"][0]["Id"]
+        if(response.status_code == 200):
+            id_list = []
+            new_entities = response.json()
+            for entity in new_entities["Items"]:
+                id_list.append(entity["Id"])
+            return id_list
+        else:
+            print("Status Code: ", response.status_code)
