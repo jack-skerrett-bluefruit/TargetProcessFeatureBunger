@@ -2,7 +2,7 @@ import requests
 from json import loads
 from settings import TP_URL, ACCESS_TOKEN
 
-class Creater():
+class Creater:
     def __init__(self, entity_type, data = None):
         self.request_url = self.set_request_url(entity_type)
         self.data = data

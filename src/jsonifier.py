@@ -1,13 +1,15 @@
 from src.reader import Reader
-from settings import NEW_TEST_CASES, DEFAULT_TEST_STEP, CREATE_FEATURE_OR_TEST_PLAN_BODY
 from copy import deepcopy
 
-class Jsonifier():
+class Jsonifier:
     def __init__(self, file_name, project):
         self.reader = Reader(file_name)
         self.project = project
         self.tp_format_feature_file = []
         self.feature_name = ""
+        self.new_test_cases = {"Name": "","Project":{"ID": ""}, "TestSteps": {"Items": []}}
+        self.default_test_step = {"ResourceType":"TestStep","Description":""}
+        self.feature_body = {"Name":"","Project":{"ID":""}}
         self.set_tp_format_feature_file()
         
 
@@ -18,7 +20,7 @@ class Jsonifier():
                 if(list_test_case.split()[0] == "Feature:"):
                     self.feature_name = list_test_case
                     continue
-            test_case = deepcopy(NEW_TEST_CASES)
+            test_case = deepcopy(self.new_test_cases)
             test_case["Project"]["ID"] = self.project
             for line in list_test_case:
                 if(line == ""):
@@ -26,15 +28,14 @@ class Jsonifier():
                 elif(line[:8] == "Scenario"):
                     test_case["Name"] = line
                 else:
-                    test_step = deepcopy(DEFAULT_TEST_STEP)
+                    test_step = deepcopy(self.default_test_step)
                     test_step["Description"] = line
                     test_case["TestSteps"]["Items"].append(test_step)
             self.tp_format_feature_file.append(test_case)
 
     def create_new_feature_or_test_plan_body(self):
-        feature_body = CREATE_FEATURE_OR_TEST_PLAN_BODY
-        feature_body["Name"] = self.feature_name
-        feature_body["Project"]["ID"] = self.project
+        self.feature_body["Name"] = self.feature_name
+        self.feature_body["Project"]["ID"] = self.project
         bulk_feature_body= []
-        bulk_feature_body.append(feature_body)
+        bulk_feature_body.append(self.feature_body)
         return bulk_feature_body

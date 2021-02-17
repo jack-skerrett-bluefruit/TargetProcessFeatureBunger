@@ -28,7 +28,7 @@ def test_assigner_constructs_correct_data_for_assinging_a_test_case_to_a_test_pl
                 ]
             }
         }
-    assert assign_test_case_to_plan.data == expected_data
+    assert assign_test_case_to_plan.test_plan_body == expected_data
 
 def test_assigner_creates_the_correct_url_to_post_test_case_assignment_to(assign_test_case_to_plan):
     expected_url = ["https://bluefruit.tpondemand.com/api/v1/TestCases/12345?format=json&access_token=testaccesstoken"]
@@ -47,7 +47,7 @@ def test_assigner_constructs_correct_data_for_assinging_a_test_plan_to_a_feature
             "Id": 54321
             }
     }
-    assert assign_test_plan_to_feature.data == expected_data
+    assert assign_test_plan_to_feature.feature_body == expected_data
 
 def test_assigner_creates_the_correct_url_to_post_test_plan_assignment_to(assign_test_plan_to_feature):
     expected_url = ["https://bluefruit.tpondemand.com/api/v1/Feature/99999?include=[Id,LinkedTestPlan]&format=json&access_token=testaccesstoken"]
