@@ -1,6 +1,6 @@
 from pytest import fixture
-from src.feature_file_reader import Reader
-from src.feature_file_jsonifier import Jsonifier
+from src.reader import Reader
+from src.jsonifier import Jsonifier
 
 @fixture
 def json_test_feature():
@@ -9,6 +9,10 @@ def json_test_feature():
 @fixture
 def json_tests_feature():
     return Jsonifier("tests/tests.feature", 12345)
+
+@fixture
+def json_whole_feature_file():
+    return Jsonifier("tests/whole_feature.feature", 12345)
 
 def test_jsonifier_initialises_with_a_read_feature_file(json_test_feature):
     read_feature_file = [
@@ -97,9 +101,27 @@ def test_jsonifier_converts_a_test_into_a_target_process_friendly_dictionary_tes
                     "Description": "Then there is an outcome"
                 }
             ]
-
         }
     }
     ]
     assert expected_dictionary == json_test_feature.tp_format_feature_file
 
+def test_jsonifier_stores_feature_file_name(json_whole_feature_file):
+    assert json_whole_feature_file.feature_name == "Feature: Whole Feature"
+
+def test_jsonifier_doesnt_store_a_feature_file_name_if_there_isnt_one_in_the_feature_file(json_tests_feature):
+    assert json_tests_feature.feature_name == ""
+
+def test_create_new_feature_body(json_whole_feature_file):
+    expected_body = [{
+        "Name":"Feature: Whole Feature",
+        "Project":{"ID":12345}
+        }]
+    assert json_whole_feature_file.create_new_feature_or_test_plan_body() == expected_body
+
+def test_create_new_test_plan_body(json_whole_feature_file):
+    expected_body = [{
+        "Name":"Feature: Whole Feature",
+        "Project":{"ID":12345}
+        }]
+    assert json_whole_feature_file.create_new_feature_or_test_plan_body() == expected_body
