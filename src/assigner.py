@@ -24,12 +24,12 @@ class Assigner:
         if(not self.feature):
             test_case_urls = []
             for item in self.test_case:
-                test_case_urls.append(TP_URL + "TestCases/" + str(item) + "?format=json&access_token=" + ACCESS_TOKEN)
+                test_case_urls.append(f"{TP_URL}TestCases/{str(item)}?format=json&access_token={ACCESS_TOKEN}")
             return test_case_urls
         elif(not self.test_case):
             feature_urls = []
             for item in self.feature:
-                feature_urls.append(TP_URL + "Feature/" + str(item) + "?include=[Id,LinkedTestPlan]&format=json&access_token=" + ACCESS_TOKEN)
+                feature_urls.append(f"{TP_URL}Feature/{str(item)}?include=[Id,LinkedTestPlan]&format=json&access_token={ACCESS_TOKEN}")
             return feature_urls
 
     def link_test_case_to_test_plan(self):

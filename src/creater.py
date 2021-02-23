@@ -8,7 +8,7 @@ class Creater:
         self.data = data
 
     def set_request_url(self, entity_type):
-        return TP_URL + entity_type + "/bulk?include=[ID]&format=json&access_token=" + ACCESS_TOKEN
+        return f"{TP_URL}{entity_type}/bulk?include=[ID]&format=json&access_token={ACCESS_TOKEN}"
 
     def upload_entity(self):
         response = requests.post(self.request_url, json=self.data)
