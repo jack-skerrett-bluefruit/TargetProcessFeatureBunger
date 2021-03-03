@@ -6,11 +6,15 @@ class FeatureCheckSuccessResponse:
     status_code = 200
 
 class FeatureCheckFailureResponse:
-    status_code = 
+    status_code = 404
 
 @fixture
 def feature_updater():
     return Updater("Feature: Whole Feature", 99999, 12345)
+
+@fixture
+def non_existent_feature_updater():
+    return Updater("Feature: Not A Whole Feature", 88888, 12345)
 
 
 def test_that_updater_intialises_with_feature_id(feature_updater):
@@ -27,11 +31,14 @@ def test_updater_finds_a_feature(feature_updater, monkeypatch):
 
     monkeypatch.setattr(requests, "get", mock_get)
 
-    assert(feature_updater.check_feature() == 200)
+    assert(feature_updater.check_feature() == True)
     
 
-
-def test_updater_does_not_find_a_feature():
+def test_updater_does_not_find_a_feature(non_existent_feature_updater, monkeypatch):
     def mock_get(*args, **kwargs):
         return FeatureCheckFailureResponse()
+    
+    monkeypatch.setattr(requests, "get", mock_get)
+    assert(non_existent_feature_updater.check_feature() == False)
+
 
