@@ -21,6 +21,10 @@ def examples_no_spaces_reader():
 def whole_feature_file_reader():
     return Reader("tests/whole_feature.feature")
 
+@fixture
+def tagged_feature_file_reader():
+    return Reader("tests/tagged_feature.feature")
+
 def test_reader_initialises_with_given_feature_file(test_reader):
     assert test_reader.file_name == "tests/test.feature"
 
@@ -97,3 +101,37 @@ def test_reader_can_read_a_full_feature_file(whole_feature_file_reader):
         ]
     ]
     assert whole_feature_file_reader.feature_file == expected_feature_list
+
+def test_reader_adds_tags_above_scenario_titles(tagged_feature_file_reader):
+    expected_feature_list = [
+        "Feature: Whole Feature",
+        [
+            "@34566",
+            "Scenario: This is a test title",
+            "Given a set up",
+            "When an action occurs",
+            "Then there is an outcome"
+        ],
+        [
+            "Scenario: This is another test title",
+            "Given a slightly different set up",
+            "When a similar action occurs",
+            "Then there is a different outcome"
+        ],
+        [
+            "@34567",
+            "Scenario: Title test a is this",
+            "Given up set a",
+            "When occurs action an",
+            "Then outcome an is there"
+        ],
+        [
+            "@34565",
+            "Scenario: Title test another is this",
+            "Given up set different slightly a",
+            "When occurs action similar an",
+            "Then outcome different a is there"
+        ]
+    ]
+
+    assert tagged_feature_file_reader.feature_file == expected_feature_list

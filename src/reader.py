@@ -14,6 +14,13 @@ class Reader:
                     continue
                 elif(line.split()[0] == "Feature:"):
                     self.feature_file.append(line)
+                elif(line[0] == "@" and first_pass):
+                    test_case.append(line)
+                elif(line[0] == "@" and not first_pass):
+                    self.feature_file.append(test_case)
+                    test_case = []
+                    test_case.append(line)
+                    first_pass = True
                 elif(line[:8] == "Scenario" and first_pass):
                     test_case.append(line)
                     first_pass = False
@@ -21,6 +28,7 @@ class Reader:
                     self.feature_file.append(test_case)
                     test_case = []
                     test_case.append(line)
+                    first_pass = True
                 elif(line.split()[0] in ("Given", "When", "Then", "And", "But", "Examples:")):
                     test_case.append(line)
                     first_pass = False
