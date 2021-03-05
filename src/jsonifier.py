@@ -25,6 +25,8 @@ class Jsonifier:
             for line in list_test_case:
                 if(line == ""):
                     pass
+                elif(line[0] == "@"):
+                    test_case["ID"] = int(line.replace("@", ""))
                 elif(line[:8] == "Scenario"):
                     test_case["Name"] = line
                 else:
