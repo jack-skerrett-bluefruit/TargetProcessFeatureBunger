@@ -1,5 +1,6 @@
 from pytest import fixture
 from src.updater import Updater
+from src.jsonifier import Jsonifier
 import requests
 
 class FeatureCheckSuccessResponse:
@@ -45,7 +46,8 @@ def known_feature_to_update():
 def features_test_cases_are_known():
     updater = Updater("Feature: Whole Feature", 12345)
     updater.feature_id = 99999
-    updater.test_cases = [34565, 34566, 34567]
+    updater.tp_test_cases = [34565, 34566, 34567]
+    updater.feature_file = Jsonifier("tests/tagged_feature.feature", 12345)
     return updater
 
 def test_updater_creates_a_request_to_check_that_a_feature_exists(feature_updater):
@@ -108,7 +110,9 @@ def test_updater_stores_list_of_all_test_case_ids_of_a_known_feature(known_featu
         
     monkeypatch.setattr(Updater, "get_test_cases_of_an_existing_feature", mock_get_test_cases_of_an_existing_feature)
     known_feature_to_update.set_test_cases_of_an_existing_feature()
-    assert known_feature_to_update.test_cases == [34565, 34566, 34567]
+    assert known_feature_to_update.tp_test_cases == [34565, 34566, 34567]
 
 def test_updater_splits_tests_out_that_dont_exist_in_feature(features_test_cases_are_known):
-    
+    features_test_cases_are_known.compare_local_feature_with_target_process()
+    assert features_test_cases_are_known.tests_in_target_process == [34565, 34566, 34567] 
+    assert features_test_cases_are_known.tests_not_in_target_process == []

@@ -38,6 +38,6 @@ class Jsonifier:
     def create_new_feature_or_test_plan_body(self):
         self.feature_body["Name"] = self.feature_name
         self.feature_body["Project"]["ID"] = self.project
-        bulk_feature_body= []
+        bulk_feature_body = []
         bulk_feature_body.append(self.feature_body)
         return bulk_feature_body
