@@ -16,7 +16,7 @@
             "type": "python",
             "request": "launch",
             "module": "pytest",
-            "args": []
+            "args": ["-vv"]
         }
     ]
 }

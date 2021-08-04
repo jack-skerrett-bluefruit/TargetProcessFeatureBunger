@@ -1,3 +1,8 @@
+"""
+The reader class takes in the name of a feature file, and returns a list based feature file (each test case is a list, existing within a
+list that contains the whole feature.
+"""
+
 class Reader:
     def __init__(self, file_name):
         self.file_name = file_name

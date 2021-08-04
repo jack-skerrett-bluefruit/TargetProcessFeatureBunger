@@ -1,58 +1,31 @@
 from settings import TP_URL, ACCESS_TOKEN
+from fetcher import Fetcher
 import requests
 
 class Updater:
-    def __init__(self, feature_name, project_id, feature_file = None):
-        self.feature_name = feature_name
-        self.project_id = project_id
-        self.feature_file = feature_file
-        self.check_feature_exists_request_url = self.set_request_url()
+    def __init__(self, local_tp_feature_file):
+        self.feature_name = local_tp_feature_file.feature_name
+        self.project_id = local_tp_feature_file.project
+        self.local_tp_feature_file = local_tp_feature_file.tp_format_feature_file
 
-    def set_request_url(self):
+    def construct_feature_check_request(self):
         return f"{TP_URL}Features?where=(Name eq \'{self.feature_name}\') and (Project.Id eq {self.project_id})&include=[Id]&format=json&access_token={ACCESS_TOKEN}"
 
-    def check_feature(self):
-        response = requests.get(self.check_feature_exists_request_url)
+    def does_feature_exist(self):
+        request = self.construct_feature_check_request()
+        response = requests.get(request)
         if(response.status_code == 200):
             feature = response.json()
-            self.feature_id = feature["Items"][0]["Id"]
+            self.remote_feature_id = feature["Items"][0]["Id"]
             return True
-        else:   #I'm unsure about this. I want to look for a 404 to indicate an error, other status codes could mean there is an issue with the API, and the feature DOES exist
+        else:
             return False
 
-    def set_test_cases_of_an_existing_feature(self):
-        existing_feature = self.get_test_cases_of_an_existing_feature()
-        self.tp_test_cases = []
-        for test_case in existing_feature["LinkedTestPlan"]["TestCases"]["Items"]:
-            self.tp_test_cases.append(test_case["Id"])
-
-    def get_test_cases_of_an_existing_feature(self):
-        response = requests.get(f"{TP_URL}Features/{self.feature_id}/?format=json&include=[LinkedTestPlan[TestCases[Id]]]&access_token={ACCESS_TOKEN}")
-        return response.json()
-
-    def extract_unknown_tests(self):
-        known_tests = []
-        unknown_tests = []
-
-        for test in self.feature_file.tp_format_feature_file:
-            try:
-                if(test["ID"]):
-                    known_tests.append(test)
-            except:
-                unknown_tests.append(test)
-
-        return known_tests, unknown_tests
-                            
-    def compare_local_feature_with_target_process(self):
-        self.tests_in_target_process = []
-        self.tests_with_id_not_in_target_process = []
-        self.tests_with_no_id_not_in_target_process = []
-        for test in self.feature_file.tp_format_feature_file:
-            try:
-                if(test["ID"] in self.tp_test_cases):
-                    self.tests_in_target_process.append(test)
-                else: 
-                    self.tests_with_id_not_in_target_process.append(test)
-            except:
-                self.tests_with_no_id_not_in_target_process.append(test)
-                continue
+    def find_tests_that_are_local_and_remote(self):
+        fetcher = Fetcher(self.remote_feature_id)
+        fetcher.construct_feature_get_request()
+        fetcher.get_test_case_ids_for_a_feature()
+        self.find_duplicates_in_two_json_features(fetcher.test_case_ids)
+        
+    def find_duplicates_in_two_json_features(self, remote_feature):
+        #need to iterate through two lists and be really smart, I just dont know how

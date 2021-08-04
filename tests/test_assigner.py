@@ -14,7 +14,7 @@ def assign_multiple_test_cases_to_plan():
 def assign_test_plan_to_feature():
     return Assigner(feature=[99999], test_plan=[54321])
 
-def test_feature_assigner_initialises_withtest_case_id_and_test_plan_id_to_assign_it_to():
+def test_feature_assigner_initialises_with_test_case_id_and_test_plan_id_to_assign_it_to():
     assigner = Assigner(feature=[99999], test_plan=[54321], test_case=[12345])
     assert assigner.feature == [99999]
     assert assigner.test_plan == 54321

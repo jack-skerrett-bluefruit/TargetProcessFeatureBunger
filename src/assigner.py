@@ -2,6 +2,10 @@ from settings import TP_URL, ACCESS_TOKEN
 from copy import deepcopy
 import requests
 
+"""
+You give the assigner a feature and a test plan or a test plan and test case, it will then link them in Target Process
+"""
+
 class Assigner:
     def __init__(self, feature=None, test_plan=None, test_case=None):
         self.feature = feature
@@ -13,11 +17,11 @@ class Assigner:
         self.request_url = self.set_request_url()
 
     def set_data(self):
-        if(self.feature == None):
+        if(not self.feature):
             test_case_id_item = {"ID":""}
             test_case_id_item["ID"] = self.test_plan
             self.test_plan_body["TestPlans"]["Items"].append(test_case_id_item)
-        elif(self.test_case == None):
+        elif(not self.test_case):
             self.feature_body["LinkedTestPlan"]["Id"] = self.test_plan
 
     def set_request_url(self):

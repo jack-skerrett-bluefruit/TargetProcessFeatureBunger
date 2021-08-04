@@ -1,11 +1,11 @@
 from src.jsonifier import Jsonifier
-from src.creater import Creater
+from src.creator import Creator
 from src.assigner import Assigner
 
-j = Jsonifier("tests/whole_feature.feature", 29234)
-c1 = Creater("Features", j.create_new_feature_or_test_plan_body())
-c2 = Creater("TestPlans", j.create_new_feature_or_test_plan_body())
-c3 = Creater("TestCases", j.tp_format_feature_file)
+j = Jsonifier("tests/CallumTestFeature.feature", 29234)
+c1 = Creator("Features", j.create_new_feature_or_test_plan_body())
+c2 = Creator("TestPlans", j.create_new_feature_or_test_plan_body())
+c3 = Creator("TestCases", j.tp_format_feature_file)
 
 feature_id = c1.upload_entity()
 plan_id = c2.upload_entity()

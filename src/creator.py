@@ -2,7 +2,11 @@ import requests
 from json import loads
 from settings import TP_URL, ACCESS_TOKEN
 
-class Creater:
+"""
+You can give creator some parameters and it will go and create a brand new entity in target process of a specific type with specific data
+"""
+
+class Creator:
     def __init__(self, entity_type, data = None):
         self.request_url = self.set_request_url(entity_type)
         self.data = data
